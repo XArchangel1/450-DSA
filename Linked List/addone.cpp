@@ -49,12 +49,16 @@ class Solution
    Node* addOne(Node *head) 
    {
        if(!head) return head;
-       if(head->next==NULL){
+       if(head->next==NULL)
+       {
            head->data+=1;
            return head;
        }
+
        Node *temp=addOne(head->next);
-       if(temp->data==10){
+       
+       if(temp->data==10)
+       {
            head->data+=1;
            temp->data=0;
        }
