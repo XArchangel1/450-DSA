@@ -1,98 +1,30 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-
-struct node
-{
-    int data;
-    struct node* next;
-    
-    node(int x){
-        data = x;
-        next = NULL;
+Node* reverse(Node* head, Node* tail){
+    Node *prev = NULL;
+    while(prev != tail){
+        Node* next = head -> next;
+        head -> next = prev;
+        prev = head;
+        head = next;
     }
+    return prev;
     
-};
-
-void printList(struct node *node)
-{
-    while (node != NULL)
-    {
-        printf("%d ", node->data);
-        node = node->next;
-    }
-    printf("\n");
 }
 
-class Solution
+Node *getListAfterReverseOperation(Node *head, int n, int b[])
 {
-    public:
-
-    struct node *reverse (struct node *head, int k)
-    { 
-        if(head == NULL || head->next == NULL)
-        {
-            return head;
-        }
-
-        node* curr = head;
-        node* prev = NULL;
-        node* Next = NULL;
-        int c = 0;
-        while(curr != NULL and c<k)
-        {
-            Next = curr->next;
-            curr->next = prev;
-            prev = curr;
-            curr = Next;
-            c++;
-        }
-        if(Next!=NULL)
-        {
-            head->next = reverse(Next, k);
-        }
-
-        return prev;
-    }
-};
-
-int main(void)
-{
-    int t;
-    cin>>t;
-     
-    while(t--)
+    // Write your code here.
+    if(n == 0 or head == NULL or head ->next == NULL)
+        return head;
+    int k = b[0];
+    if(k == 0)
     {
-        struct node* head = NULL;
-        struct node* temp = NULL;
-        int n;
-        cin >> n;
-         
-        for(int i=0 ; i<n ; i++)
-        {
-            int value;
-            cin >> value;
-            if(i == 0)
-            {
-                head = new node(value);
-                temp = head;
-            }
-            else
-            {
-                temp->next = new node(value);
-                temp = temp->next;
-            }
-        }
-        
-        int k;
-        cin>>k;
-        
-        Solution ob;
-        head = ob.reverse(head, k);
-        printList(head);
+        return getListAfterReverseOperation(head, n - 1, b + 1);
     }
-     
-    return(0);
+    Node* currTail = head;
+    for(int i = 0; i < k - 1 and currTail -> next != NULL; i++)
+        currTail = currTail -> next;
+    Node* nextBlockHead = currTail -> next;
+    Node* newHead = reverse(head, currTail);
+    head -> next = getListAfterReverseOperation(nextBlockHead, n - 1, b + 1);
+    return newHead;
 }
-
-  // } Driver Code Ends
